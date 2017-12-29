@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>circle</title>
+  <script type="text/javascript" src="getContext.js"></script>
+</head>
+<body>
+  <canvas
+      id="canvas"
+      width="1024"
+      height="768"
+      style="display: block; border: 1px solid #aaa; margin: 50px auto;">
+    当前浏览器不支持Canvas，请更换浏览器后再试
+  </canvas>
+</body>
+<script type="text/javascript">
+  var ctx = getContext();
+  ctx.lineWidth = 5;
+  ctx.strokeStyle = '#005588';
+
+  for (var i = 0; i < 10; i++) {
+    ctx.beginPath();
+    ctx.arc(50 + i * 100, 60, 40, 0, 2 * Math.PI * (i + 1) / 10);
+    ctx.closePath();
+    ctx.stroke();
+  }
+
+  for (i = 0; i < 10; i++) {
+    ctx.beginPath();
+    ctx.arc(50 + i * 100, 180, 40, 0, 2 * Math.PI * (i + 1) / 10);
+    ctx.stroke();
+  }
+
+  for (i = 0; i < 10; i++) {
+    ctx.beginPath();
+    ctx.arc(50 + i * 100, 300, 40, 0, 2 * Math.PI * (i + 1) / 10, true);
+    ctx.closePath();
+    ctx.stroke();
+  }
+
+  for (i = 0; i < 10; i++) {
+    ctx.beginPath();
+    ctx.arc(50 + i * 100, 420, 40, 0, 2 * Math.PI * (i + 1) / 10, true);
+    ctx.stroke();
+  }
+
+  ctx.fillStyle = '#005588';
+  for (i = 0; i < 10; i++) {
+    ctx.beginPath();
+    ctx.arc(50 + i * 100, 540, 40, 0, 2 * Math.PI * (i + 1) / 10);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  for (i = 0; i < 10; i++) {
+    ctx.beginPath();
+    ctx.arc(50 + i * 100, 660, 40, 0, 2 * Math.PI * (i + 1) / 10);
+    ctx.fill();
+  }
+</script>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>stroke</title>
+</head>
+<body>
+  <canvas id="canvas">
+    当前浏览器不支持Canvas，请更换浏览器后重试
+  </canvas>
+</body>
+<script src="getContext.js"></script>
+<script>
+  var ctx = getContext();
+
+  var canvas = ctx.canvas;
+  canvas.width = window.outerWidth;
+  canvas.height=  window.outerHeight;
+
+//  ctx.lineWidth = 10;
+//  ctx.fillStyle = 'yellow';
+//  ctx.strokeStyle = '#058';
+//
+//  ctx.beginPath();
+//  ctx.moveTo(100, 350);
+//  ctx.lineTo(500, 350);
+//  ctx.lineTo(500, 200);
+//  ctx.lineTo(700, 400);
+//  ctx.lineTo(500, 600);
+//  ctx.lineTo(500, 450);
+//  ctx.lineTo(100, 450);
+//  ctx.closePath();
+//
+//  // 这里先填充，后描边
+//  // 否则，填充色会覆盖一般的描边宽度
+//  ctx.fill();
+//  ctx.stroke();
+
+  drawRect(ctx, 100, 100, 500, 300, 10, '#058', 'yellow');
+
+  function drawRect(ctx, x, y, width, height, borderWidth, borderColor, fillColor) {
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + width, y);
+    ctx.lineTo(x + width, y + height);
+    ctx.lineTo(x, y + height);
+    ctx.closePath();
+
+    ctx.lineWidth = borderWidth;
+    ctx.fillStyle = fillColor;
+    ctx.strokeStyle = borderColor;
+
+    ctx.fill();
+    ctx.stroke();
+  }
+
+</script>
+</html>

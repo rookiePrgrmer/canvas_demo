@@ -4,7 +4,8 @@ var RADIUS = 8;
 var MARGIN_TOP = 60;
 var MARGIN_LEFT = 30;
 
-var endTime = new Date(2018, 0, 2, 23, 59, 59);
+// var endTime = new Date();
+// endTime.setTime(endTime.getTime() + 3600 * 1000);
 var curShowTimeSeconds = 0;
 
 var balls = [];
@@ -17,10 +18,21 @@ const COLORS = [
 
 window.onload = function() {
 
-  WINDOW_WIDTH = document.body.clientWidth;
-  WINDOW_HEIGHT = document.body.clientHeight;
+  WINDOW_WIDTH = window.outerWidth;
+  console.log(WINDOW_WIDTH);
+  WINDOW_HEIGHT = window.outerHeight;
+  console.log(WINDOW_HEIGHT);
+
+  MARGIN_LEFT = Math.round(WINDOW_WIDTH / 10);
+  RADIUS = Math.round(WINDOW_WIDTH * 4/ 5 / 108) - 1;
+
+  MARGIN_TOP = Math.round(WINDOW_HEIGHT / 5);
 
   var ctx = getContext();
+  var canvas = getCanvas();
+
+  canvas.width = WINDOW_WIDTH;
+  canvas.height = WINDOW_HEIGHT;
 
   curShowTimeSeconds = getCurrentShowTimeSeconds();
 
@@ -80,10 +92,13 @@ window.onload = function() {
 
 function getCurrentShowTimeSeconds() {
   var curTime = new Date();
-  var ret = endTime.getTime() - curTime.getTime();
-  ret = Math.round(ret / 1000);
+  // var ret = endTime.getTime() - curTime.getTime();
+  // ret = Math.round(ret / 1000);
+  //
+  // return ret >= 0 ? ret : 0;
 
-  return ret >= 0 ? ret : 0;
+  var ret = curTime.getHours() * 3600 + curTime.getMinutes() * 60 + curTime.getSeconds();
+  return ret;
 }
 
 function update() {

@@ -1,10 +1,10 @@
-var WINDOW_WIDTH = 1024;
-var WINDOW_HEIGHT = 768;
+var WINDOW_WIDTH = 0;
+var WINDOW_HEIGHT = 0;
 var RADIUS = 8;
 var MARGIN_TOP = 60;
 var MARGIN_LEFT = 30;
 
-var endTime = new Date(2017, 11, 31, 23, 59, 59);
+var endTime = new Date(2018, 0, 2, 23, 59, 59);
 var curShowTimeSeconds = 0;
 
 var balls = [];
@@ -16,6 +16,10 @@ const COLORS = [
 ];
 
 window.onload = function() {
+
+  WINDOW_WIDTH = document.body.clientWidth;
+  WINDOW_HEIGHT = document.body.clientHeight;
+
   var ctx = getContext();
 
   curShowTimeSeconds = getCurrentShowTimeSeconds();
@@ -134,6 +138,17 @@ function updateBalls() {
       ball.y = WINDOW_HEIGHT - RADIUS;
       ball.vy = -ball.vy * 0.75;
     }
+  }
+
+  var cnt = 0;
+  for (var i = 0, len = balls.length; i < len; i++) {
+    if (balls[i].x + RADIUS > 0 && balls[i].x - RADIUS < WINDOW_WIDTH) {
+      balls[cnt++] = balls[i];
+    }
+  }
+
+  while (balls.length > Math.min(300, cnt)) {
+    balls.pop();
   }
 }
 

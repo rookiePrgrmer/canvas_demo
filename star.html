@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>star</title>
+</head>
+<body>
+  <canvas id="canvas">
+    当前浏览器不支持Canvas，请更换浏览器后重试
+  </canvas>
+</body>
+<script src="getContext.js"></script>
+<script type="text/javascript">
+  window.onload = function() {
+    var WINDOW_WIDTH = window.outerWidth;
+    var WINDOW_HEIGHT = window.outerHeight;
+    var CENTER_X = WINDOW_WIDTH / 2;
+    var CENTER_Y = WINDOW_HEIGHT / 2;
+
+    var ctx = getContext();
+    var canvas = getCanvas();
+
+    canvas.width = WINDOW_WIDTH;
+    canvas.height = WINDOW_HEIGHT;
+
+    ctx.lineJoin = 'miter';
+    ctx.miterLimit = 20;
+
+    drawStar(ctx, 30, 300, CENTER_X, CENTER_Y, 30);
+  };
+
+  function drawStar(ctx, r, R, x, y, rot) {
+    ctx.lineWidth = 10;
+
+    ctx.beginPath();
+    for (var i = 0, len = 5; i < len; i++) {
+      ctx.lineTo(
+        Math.cos((18 + i * 72 - rot) / 180 * Math.PI) * R + x,
+        -Math.sin((18 + i * 72 - rot) / 180 * Math.PI) * R + y);
+
+      ctx.lineTo(
+        Math.cos((54 + i * 72 - rot) / 180 * Math.PI) * r + x,
+        -Math.sin((54 + i * 72 - rot) / 180 * Math.PI) * r + y);
+    }
+    ctx.closePath();
+
+    ctx.stroke();
+  }
+</script>
+</html>

@@ -3,6 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <title>star</title>
+  <style type="text/css">
+    html, body {
+      margin: 0;
+      font-size: 0
+    }
+    canvas {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
 </head>
 <body>
   <canvas id="canvas">
@@ -11,40 +23,98 @@
 </body>
 <script src="getContext.js"></script>
 <script type="text/javascript">
+  var stars = [];
+
   window.onload = function() {
-    var WINDOW_WIDTH = window.outerWidth;
-    var WINDOW_HEIGHT = window.outerHeight;
-    var CENTER_X = WINDOW_WIDTH / 2;
-    var CENTER_Y = WINDOW_HEIGHT / 2;
+//    var WINDOW_WIDTH = window.innerWidth;
+//    var WINDOW_HEIGHT = window.innerHeight;
+//    var CENTER_X = WINDOW_WIDTH / 2;
+//    var CENTER_Y = WINDOW_HEIGHT / 2;
 
     var ctx = getContext();
     var canvas = getCanvas();
 
-    canvas.width = WINDOW_WIDTH;
-    canvas.height = WINDOW_HEIGHT;
+//    canvas.width = WINDOW_WIDTH;
+//    canvas.height = WINDOW_HEIGHT;
+    canvas.width = 800;
+    canvas.height = 800;
 
-    ctx.lineJoin = 'miter';
-    ctx.miterLimit = 20;
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    drawStar(ctx, 30, 300, CENTER_X, CENTER_Y, 30);
+    for (var i = 0, len = 200; i < len; i++) {
+      var r = Math.random() * 10 + 10;
+      var a = Math.random() * 360;
+
+      // 保证x落在画布范围内
+      var x = randomPos(canvas.width);
+      x = makeItValid(x, r);
+
+      // 保证y落在画布范围内
+      var y = randomPos(canvas.height);
+      y = makeItValid(y, r);
+
+      drawStar(ctx, r, r / 2.0, x, y, a);
+    }
   };
 
   function drawStar(ctx, r, R, x, y, rot) {
-    ctx.lineWidth = 10;
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rot / 108 * Math.PI);
+    startPath(ctx);
 
+    ctx.fillStyle = '#fb3';
+    ctx.strokeStyle = '#fd5';
+    ctx.lineWidth = 3;
+    ctx.lineJoin = 'round';
+
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.restore();
+  }
+
+  function startPath(ctx) {
     ctx.beginPath();
     for (var i = 0, len = 5; i < len; i++) {
       ctx.lineTo(
-        Math.cos((18 + i * 72 - rot) / 180 * Math.PI) * R + x,
-        -Math.sin((18 + i * 72 - rot) / 180 * Math.PI) * R + y);
+          Math.cos((18 + i * 72) / 180 * Math.PI) * 20,
+          -Math.sin((18 + i * 72) / 180 * Math.PI) * 20);
 
       ctx.lineTo(
-        Math.cos((54 + i * 72 - rot) / 180 * Math.PI) * r + x,
-        -Math.sin((54 + i * 72 - rot) / 180 * Math.PI) * r + y);
+          Math.cos((54 + i * 72) / 180 * Math.PI) * 10,
+          -Math.sin((54 + i * 72) / 180 * Math.PI) * 10);
     }
     ctx.closePath();
+  }
 
-    ctx.stroke();
+  function randomPos(base) {
+    return Math.random() * base;
+  }
+  function makeItValid(pos, r) {
+    if (pos - r < 0) {
+      pos = r;
+    } else if (pos + r > 800) {
+      pos = 800 - r;
+    }
+
+    return pos;
+  }
+  function duplicate(star) {
+    var x = star.x;
+    var y = star.y;
+    var r = star.r;
+
+    for (var i = 0, len = stars.length; i < len; i++) {
+      var aStar = stars[i];
+
+      if (Math.abs(aStar.x - x) < (aStar.r + r) || Math.abs(aStar.y - y) < (aStar.r +r)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 </script>
 </html>

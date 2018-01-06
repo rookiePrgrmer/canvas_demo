@@ -36,55 +36,65 @@
 
 //    canvas.width = WINDOW_WIDTH;
 //    canvas.height = WINDOW_HEIGHT;
-    canvas.width = 800;
+    canvas.width = 1200;
     canvas.height = 800;
 
-    ctx.fillStyle = 'black';
+    // 线性渐变填充天空
+//    var lg = ctx.createLinearGradient(0, 0, 0, canvas.height);
+//    lg.addColorStop(0.0, 'black');
+//    lg.addColorStop(1.0, '#035');
+//    ctx.fillStyle = lg;
+
+    // 径向渐变绘制天空
+    var rg = ctx.createRadialGradient(
+        canvas.width / 2, canvas.height, 0,
+        canvas.width / 2, canvas.height, canvas.height
+    );
+    rg.addColorStop(0.0, '#035');
+    rg.addColorStop(1.0, 'black');
+    ctx.fillStyle = rg;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     for (var i = 0, len = 200; i < len; i++) {
-      var r = Math.random() * 10 + 10;
+      var r = Math.random() * 5 + 5;
       var a = Math.random() * 360;
 
       // 保证x落在画布范围内
       var x = randomPos(canvas.width);
-      x = makeItValid(x, r);
+      x = makeItValid(x, r, canvas.width);
 
       // 保证y落在画布范围内
-      var y = randomPos(canvas.height);
-      y = makeItValid(y, r);
+      var y = randomPos(canvas.height * 0.65);
+      y = makeItValid(y, r, canvas.height);
 
-      drawStar(ctx, r, r / 2.0, x, y, a);
+      drawStar(ctx, r, x, y, a);
     }
   };
 
-  function drawStar(ctx, r, R, x, y, rot) {
+  function drawStar(ctx, R, x, y, rot) {
     ctx.save();
     ctx.translate(x, y);
     ctx.rotate(rot / 108 * Math.PI);
+    ctx.scale(R, R);
     startPath(ctx);
 
     ctx.fillStyle = '#fb3';
-    ctx.strokeStyle = '#fd5';
-    ctx.lineWidth = 3;
-    ctx.lineJoin = 'round';
-
     ctx.fill();
-    ctx.stroke();
 
     ctx.restore();
   }
 
+  // 绘制一个单位星星
   function startPath(ctx) {
     ctx.beginPath();
     for (var i = 0, len = 5; i < len; i++) {
       ctx.lineTo(
-          Math.cos((18 + i * 72) / 180 * Math.PI) * 20,
-          -Math.sin((18 + i * 72) / 180 * Math.PI) * 20);
+          Math.cos((18 + i * 72) / 180 * Math.PI),
+          -Math.sin((18 + i * 72) / 180 * Math.PI));
 
       ctx.lineTo(
-          Math.cos((54 + i * 72) / 180 * Math.PI) * 10,
-          -Math.sin((54 + i * 72) / 180 * Math.PI) * 10);
+          Math.cos((54 + i * 72) / 180 * Math.PI) * 0.5,
+          -Math.sin((54 + i * 72) / 180 * Math.PI) * 0.5);
     }
     ctx.closePath();
   }
@@ -92,11 +102,11 @@
   function randomPos(base) {
     return Math.random() * base;
   }
-  function makeItValid(pos, r) {
+  function makeItValid(pos, r, base) {
     if (pos - r < 0) {
       pos = r;
-    } else if (pos + r > 800) {
-      pos = 800 - r;
+    } else if (pos + r > base) {
+      pos = base - r;
     }
 
     return pos;

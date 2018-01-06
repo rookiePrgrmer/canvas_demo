@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>transform</title>
+  <style type="text/css">
+    html, body {
+      margin: 0;
+      font-size: 0
+    }
+    canvas {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas">
+    当前浏览器不支持Canvas，请更换浏览器后重试
+  </canvas>
+</body>
+<script src="getContext.js"></script>
+<script>
+  window.onload = function() {
+    var ctx = getContext();
+    var canvas = getCanvas();
+
+    canvas.width = 1200;
+    canvas.height = 800;
+
+    ctx.fillStyle = 'red';
+    ctx.strokeStyle = '#058';
+    ctx.lineWidth = 5;
+
+    ////////////////////////
+    // a c e
+    // b d f
+    // 0 0 1
+    // /////////////////////
+    // a, d 水平，垂直缩放
+    // b, c 水平，垂直倾斜
+    // e, f 水平，垂直位移
+    ////////////////////////
+
+    ctx.save();
+//    ctx.transform(2, -0.2, -0.2, 1.5, 50, 100);
+    ctx.transform(1, 0, 0, 1, 50, 100);
+    ctx.transform(2, 0, 0, 1.5, 0, 0);
+    ctx.transform(1, 0.2, 0.2, 1, 0, 0);
+    ctx.setTransform(1, 0, 0, 1, 100, 100);
+    ctx.fillRect(50, 50, 300, 300);
+    ctx.strokeRect(50, 50, 300, 300);
+    ctx.restore();
+  };
+</script>
+</html>
